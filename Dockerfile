@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi8/ubi
+FROM quay.io/centos/centos:stream8
 
 LABEL description="Firewalld daemon and command line interface"
 MAINTAINER Firewalld Maintainers <firewalld-users@lists.fedorahosted.org>
@@ -30,4 +30,6 @@ RUN dnf -y remove automake autoconf make intltool \
     && dnf -y autoremove \
     && dnf clean all
 
-CMD ["firewalld", "--nofork", "--nopid"]
+COPY ./config/FirewallD.conf /usr/share/dbus-1/system.d/
+COPY ./docker_start.sh /root/
+CMD ["bash", "/root/docker_start.sh"]

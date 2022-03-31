@@ -164,9 +164,11 @@ CONFIG_FILES = \
 	services/ganglia-client.xml \
 	services/ganglia-master.xml \
 	services/git.xml \
+	services/gpsd.xml \
 	services/grafana.xml \
 	services/gre.xml \
 	services/high-availability.xml \
+	services/http3.xml \
 	services/https.xml \
 	services/http.xml \
 	services/imaps.xml \
@@ -305,6 +307,7 @@ CONFIG_FILES = \
 	services/xmpp-server.xml \
 	services/zabbix-agent.xml \
 	services/zabbix-server.xml \
+	services/zerotier.xml \
 	zones/block.xml \
 	zones/dmz.xml \
 	zones/drop.xml \

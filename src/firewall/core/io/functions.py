@@ -35,7 +35,7 @@ from firewall.core.io.direct import Direct
 from firewall.core.io.lockdown_whitelist import LockdownWhitelist
 from firewall.core.io.firewalld_conf import firewalld_conf
 
-def check_config(fw):
+def check_on_disk_config(fw):
     fw_config = FirewallConfig(fw)
     readers = {
         "ipset":    {"reader": ipset_reader,
@@ -69,16 +69,10 @@ def check_config(fw):
                 continue
             for file in sorted(os.listdir(_dir)):
                 if file.endswith(".xml"):
-                    try:
-                        obj = readers[reader]["reader"](file, _dir)
-                        if reader in ["zone", "policy"]:
-                            obj.fw_config = fw_config
-                        obj.check_config(obj.export_config())
-                        readers[reader]["add"](obj)
-                    except FirewallError as error:
-                        raise FirewallError(error.code, "'%s': %s" % (file, error.msg))
-                    except Exception as msg:
-                        raise Exception("'%s': %s" % (file, msg))
+                    obj = readers[reader]["reader"](file, _dir)
+                    readers[reader]["add"](obj)
+    fw_config.full_check_config()
+
     if os.path.isfile(config.FIREWALLD_DIRECT):
         try:
             obj = Direct(config.FIREWALLD_DIRECT)
